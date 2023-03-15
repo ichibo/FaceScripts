@@ -1,0 +1,52 @@
+//
+// Gold/Check Deposit into Safe - v1.0
+//
+// Locates a nearby safe, asks for a container to pull from, 
+// then for every check and gold pile in the container
+// deposits it into the safe
+//
+setvar! errorColor '38'
+setvar! objectDelay 1000
+
+clearignore
+
+removelist 'GoldToMove'
+createlist 'GoldToMove'
+
+if findtype 41459 'ground' 'any' 0 2 as safe
+    overhead 'Safe Deposit Found!'
+    
+    overhead '-Target Container to Use-'
+    setvar goldContainer
+
+    if not varexist goldContainer
+        overhead '-Stopping-' errorColor
+        stop
+    endif
+
+    dclick goldContainer
+    wait objectDelay
+
+    // Gather all our checks
+    while findtype 5360 goldContainer 2125 1 as check
+        pushlist 'GoldToMove' check 'back'
+        ignore check
+    endwhile
+
+    // Gather all our gold stacks
+    while findtype 3821 goldContainer 0 1 as goldPile
+        pushlist 'GoldToMove' goldPile 'back'
+        ignore goldPile
+    endwhile
+
+    foreach depositItem in 'GoldToMove'
+        lift depositItem 60000
+        wait 250
+        drop safe
+        wait objectDelay
+    endfor
+
+    overhead 'All gold deposited!'
+else
+    overhead 'No Safe Deposit Found.' 'errorColor'
+endif
