@@ -22,6 +22,7 @@ removelist 'vertical'
 removelist 'horizontal'
 removelist 'LowerRightItems'
 removelist 'LowerLeftItems'
+removelist 'ResourceMapHues'
 
 createlist 'ItemList'
 createlist 'FinalItemList'
@@ -30,6 +31,7 @@ createlist 'LowerRightItems'
 createlist 'LowerLeftItems'
 createlist 'vertical'
 createlist 'horizontal'
+createlist 'ResourceMapHues'
 
 clearsysmsg 
 overhead '-->> TARGET DISTRO <<--' 91
@@ -94,6 +96,13 @@ foreach item in LowerRightItems
         ignore pick
     endwhile
 endfor
+
+
+pushlist 'ResourceMapHues' 2651
+pushlist 'ResourceMapHues' 2904
+pushlist 'ResourceMapHues' 2799
+pushlist 'ResourceMapHues' 2796
+
 
 // Move resource maps separately as we check hues
 foreach mapHue in ResourceMapHues
