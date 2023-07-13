@@ -87,6 +87,60 @@ overhead '[DISTRO UNSTACKED]' 68
 
 clearignore
 
+overhead '[MAKING GOLD STACKS...]'
+
+// Make gold stacks in 10k increments
+// Contributions by beejer
+while 1 < 2
+    // Split existing big ones
+    while findtype 'gold coin' 'Distro' -1 10001 -1 as 'bigstack'
+        lift 'bigstack' 10000
+        drop 'chest' 0 0 0
+        pause 600
+    endwhile
+
+    // Ignore completed stacks
+    while findtype 'gold coin' 'Distro' -1 10000 -1 as 'correctstack'
+        ignore 'correctstack'
+    endwhile
+    overhead 'Splitting Gold'
+    // Find and combine remainders
+    if findtype 'gold coin' 'Distro' -1 -1 -1 as 'combinestack'
+        ignore 'combinestack'
+        setvar 'targetstack' 'combinestack'
+        if findtype 'gold coin' 'Distro' -1 -1 -1
+            while findtype 'gold coin' 'Distro' -1 -1 -1 as 'smallstack'
+                lift 'smallstack' 60000
+                drop 'targetstack'
+                pause 600
+                //if more than 60k of remainders
+                if find 'smallstack' 'Distro' -1 -1 -1
+                    setvar 'targetstack' 'smallstack'
+                endif
+                ignore 'smallstack'
+            endwhile
+         else
+             break
+         endif
+     else
+         break
+     endif
+     clearignore
+
+    // Split existing big ones
+    while findtype 'gold coin' 'chest' -1 10001 -1 as 'bigstack'
+        lift 'bigstack' 10000
+        drop 'chest' 0 0 0
+        pause 600
+    endwhile
+
+    // Ignore completed stacks
+    while findtype 'gold coin' 'chest' -1 10000 -1 as 'correctstack'
+        @ignore 'correctstack'
+    endwhile
+endwhile
+// end gold unstack
+
 // Move everything non-distro to the corner
 overhead '[MOVING NON-DISTRO ITEMS...]' 68
 foreach item in LowerRightItems
@@ -165,7 +219,6 @@ pushlist 'horizontal' '117'
 pushlist 'horizontal' '126'
 
 pause 100
-
 
 // Start our sort by looping on our drop coordinate
 overhead '[SORTING...]' 68
